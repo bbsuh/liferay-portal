@@ -18,7 +18,8 @@
 
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 
-<%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
+<%@ taglib uri="http://liferay.com/tld/asset" prefix="liferay-asset" %><%@
+taglib uri="http://liferay.com/tld/aui" prefix="aui" %><%@
 taglib uri="http://liferay.com/tld/frontend" prefix="liferay-frontend" %><%@
 taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %><%@
 taglib uri="http://liferay.com/tld/security" prefix="liferay-security" %><%@
@@ -43,7 +44,6 @@ page import="com.liferay.document.library.kernel.exception.DuplicateFileExceptio
 page import="com.liferay.document.library.kernel.exception.FileNameException" %><%@
 page import="com.liferay.document.library.kernel.exception.FileSizeException" %><%@
 page import="com.liferay.document.library.kernel.exception.NoSuchFileException" %><%@
-page import="com.liferay.document.library.kernel.util.DLUtil" %><%@
 page import="com.liferay.journal.model.JournalArticle" %><%@
 page import="com.liferay.knowledge.base.configuration.KBGroupServiceConfiguration" %><%@
 page import="com.liferay.knowledge.base.constants.KBActionKeys" %><%@
@@ -57,6 +57,7 @@ page import="com.liferay.knowledge.base.exception.KBArticleContentException" %><
 page import="com.liferay.knowledge.base.exception.KBArticleImportException" %><%@
 page import="com.liferay.knowledge.base.exception.KBArticlePriorityException" %><%@
 page import="com.liferay.knowledge.base.exception.KBArticleSourceURLException" %><%@
+page import="com.liferay.knowledge.base.exception.KBArticleStatusException" %><%@
 page import="com.liferay.knowledge.base.exception.KBArticleTitleException" %><%@
 page import="com.liferay.knowledge.base.exception.KBArticleUrlTitleException" %><%@
 page import="com.liferay.knowledge.base.exception.KBCommentContentException" %><%@
@@ -130,6 +131,7 @@ page import="com.liferay.portal.kernel.portlet.PortletPreferencesFactoryUtil" %>
 page import="com.liferay.portal.kernel.portlet.PortletProvider" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletProviderUtil" %><%@
 page import="com.liferay.portal.kernel.portlet.PortletURLUtil" %><%@
+page import="com.liferay.portal.kernel.portletfilerepository.PortletFileRepositoryUtil" %><%@
 page import="com.liferay.portal.kernel.repository.model.FileEntry" %><%@
 page import="com.liferay.portal.kernel.search.Document" %><%@
 page import="com.liferay.portal.kernel.search.Field" %><%@

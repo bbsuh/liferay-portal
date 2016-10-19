@@ -331,8 +331,8 @@ public class VerifyProperties extends VerifyProcess {
 			"com.liferay.portal.upload.UploadServletRequestImpl.temp.dir"
 		},
 		new String[] {
-			"com.liferay.util.servlet.fileupload.LiferayFileItem." +
-				"threshold.size",
+			"com.liferay.util.servlet.fileupload.LiferayFileItem.threshold." +
+				"size",
 			"com.liferay.portal.upload.LiferayFileItem.threshold.size"
 		},
 		new String[] {
@@ -1815,6 +1815,9 @@ public class VerifyProperties extends VerifyProcess {
 		"lucene.store.jdbc.dialect.mysql", "lucene.store.jdbc.dialect.oracle",
 		"lucene.store.jdbc.dialect.postgresql", "mail.hook.cyrus.add.user",
 		"mail.hook.cyrus.delete.user", "mail.hook.cyrus.home",
+		"mail.hook.fusemail.account.type", "mail.hook.fusemail.group.parent",
+		"mail.hook.fusemail.password", "mail.hook.fusemail.url",
+		"mail.hook.fusemail.username",
 		"memory.cluster.scheduler.lock.cache.enabled",
 		"message.boards.email.message.added.signature",
 		"message.boards.email.message.updated.signature",

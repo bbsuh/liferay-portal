@@ -31,7 +31,7 @@ import com.liferay.journal.content.asset.addon.entry.common.ContentMetadataAsset
 import com.liferay.journal.content.asset.addon.entry.common.UserToolAssetAddonEntry;
 import com.liferay.journal.content.asset.addon.entry.common.UserToolAssetAddonEntryTracker;
 import com.liferay.journal.content.web.configuration.JournalContentPortletInstanceConfiguration;
-import com.liferay.journal.content.web.internal.constants.JournalContentPortletKeys;
+import com.liferay.journal.content.web.constants.JournalContentPortletKeys;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalArticleDisplay;
 import com.liferay.journal.service.JournalArticleLocalServiceUtil;
@@ -173,7 +173,7 @@ public class JournalContentDisplayContext {
 
 		if (article.isApproved()) {
 			JournalContent journalContent =
-				(JournalContent) _portletRequest.getAttribute(
+				(JournalContent)_portletRequest.getAttribute(
 					JournalWebKeys.JOURNAL_CONTENT);
 
 			_articleDisplay = journalContent.getDisplay(

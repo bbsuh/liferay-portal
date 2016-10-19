@@ -636,7 +636,7 @@ public class UpgradeClient {
 
 			System.out.println("Please enter your database password: ");
 
-			String password = _consoleReader.readLine();
+			String password = _consoleReader.readLine('*');
 
 			_portalUpgradeDatabaseProperties.setProperty(
 				"jdbc.default.driverClassName", dataSource.getClassName());
@@ -672,6 +672,8 @@ public class UpgradeClient {
 
 	private static final Map<String, AppServer> _appServers =
 		new LinkedHashMap<>();
+	private static final Map<String, Database> _databases =
+		new LinkedHashMap<>();
 
 	static {
 		_appServers.put("jboss", AppServer.getJBossEAPAppServer());
@@ -682,12 +684,7 @@ public class UpgradeClient {
 		_appServers.put("weblogic", AppServer.getWebLogicAppServer());
 		_appServers.put("websphere", AppServer.getWebSphereAppServer());
 		_appServers.put("wildfly", AppServer.getWildFlyAppServer());
-	}
 
-	private static final Map<String, Database> _databases =
-		new LinkedHashMap<>();
-
-	static {
 		_databases.put("db2", Database.getDB2Database());
 		_databases.put("mariadb", Database.getMariaDBDatabase());
 		_databases.put("mysql", Database.getMySQLDatabase());

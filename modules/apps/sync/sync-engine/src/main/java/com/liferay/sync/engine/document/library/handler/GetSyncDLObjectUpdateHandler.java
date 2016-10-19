@@ -212,6 +212,8 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 				response, SyncDLObjectUpdate.class);
 		}
 
+		updateSettings(_syncDLObjectUpdate.getSettingsModifiedTimes());
+
 		List<SyncFile> syncFiles = _syncDLObjectUpdate.getSyncFiles();
 
 		if (!syncFiles.isEmpty()) {
@@ -277,7 +279,7 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 			return;
 		}
 
-		if (Files.exists(filePath) &&
+		if (FileUtil.exists(filePath) &&
 			(syncFile.isFolder() || !FileUtil.isModified(syncFile, filePath))) {
 
 			return;
@@ -325,11 +327,14 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 			tempFilePath, String.valueOf(targetSyncFile.getSyncFileId()),
 			false);
 
+		FileUtil.setModifiedTime(
+			tempFilePath, targetSyncFile.getModifiedTime());
+
 		Watcher watcher = WatcherManager.getWatcher(getSyncAccountId());
 
 		watcher.addDownloadedFilePathName(targetSyncFile.getFilePathName());
 
-		boolean exists = Files.exists(
+		boolean exists = FileUtil.exists(
 			Paths.get(targetSyncFile.getFilePathName()));
 
 		try {
@@ -395,7 +400,7 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 
 		Path sourceFilePath = Paths.get(sourceSyncFile.getFilePathName());
 
-		if (Files.notExists(sourceFilePath)) {
+		if (FileUtil.notExists(sourceFilePath)) {
 			return;
 		}
 
@@ -467,7 +472,7 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 				checksum, SyncFile.STATE_SYNCED);
 
 			if ((sourceSyncFile != null) &&
-				Files.exists(Paths.get(sourceSyncFile.getFilePathName()))) {
+				FileUtil.exists(Paths.get(sourceSyncFile.getFilePathName()))) {
 
 				copyFile(sourceSyncFile, syncFile);
 
@@ -596,7 +601,7 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 		sourceSyncFile = SyncFileService.updateSyncFile(
 			targetFilePath, targetSyncFile.getParentFolderId(), sourceSyncFile);
 
-		if (Files.exists(sourceFilePath)) {
+		if (FileUtil.exists(sourceFilePath)) {
 			FileUtil.moveFile(sourceFilePath, targetFilePath);
 
 			sourceSyncFile.setState(SyncFile.STATE_SYNCED);
@@ -614,6 +619,7 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 			downloadFile(sourceSyncFile, null, 0, false);
 		}
 
+		sourceSyncFile.setLanTokenKey(targetSyncFile.getLanTokenKey());
 		sourceSyncFile.setModifiedTime(targetSyncFile.getModifiedTime());
 		sourceSyncFile.setUiEvent(SyncFile.UI_EVENT_MOVED_REMOTE);
 
@@ -813,6 +819,7 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 		sourceSyncFile.setDescription(targetSyncFile.getDescription());
 		sourceSyncFile.setExtension(targetSyncFile.getExtension());
 		sourceSyncFile.setExtraSettings(targetSyncFile.getExtraSettings());
+		sourceSyncFile.setLanTokenKey(targetSyncFile.getLanTokenKey());
 		sourceSyncFile.setLockExpirationDate(
 			targetSyncFile.getLockExpirationDate());
 		sourceSyncFile.setLockUserId(targetSyncFile.getLockUserId());
@@ -832,7 +839,7 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 
 		Path filePath = Paths.get(targetSyncFile.getFilePathName());
 
-		if (!Files.exists(filePath)) {
+		if (!FileUtil.exists(filePath)) {
 			if (targetSyncFile.isFolder()) {
 				Path targetFilePath = Paths.get(filePathName);
 
@@ -869,6 +876,29 @@ public class GetSyncDLObjectUpdateHandler extends BaseSyncDLObjectHandler {
 			}
 
 			SyncFileService.update(sourceSyncFile);
+		}
+	}
+
+	protected void updateSettings(Map<String, Long> settingsModifiedTimes) {
+		if (settingsModifiedTimes == null) {
+			return;
+		}
+
+		for (Map.Entry<String, Long> entry : settingsModifiedTimes.entrySet()) {
+			String setting = entry.getKey();
+			long modifiedTime = entry.getValue();
+
+			if (setting.equals(
+					SyncDLObjectUpdate.
+						PREFERENCE_KEY_SYNC_CONTEXT_MODIFIED_TIME)) {
+
+				SyncAccount syncAccount = SyncAccountService.fetchSyncAccount(
+					getSyncAccountId());
+
+				syncAccount.setSyncContextModifiedTime(modifiedTime);
+
+				SyncAccountService.update(syncAccount);
+			}
 		}
 	}
 

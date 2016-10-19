@@ -105,12 +105,17 @@
 </tr>
 <tr>
 	<td>ERROR_FORM_FIELD_REQUIRED</td>
-	<td>//div[contains(@class,'has-error')]//div[contains(@class,'error-message')]</td>
+	<td>//div[contains(@class,'has-error')]//div[contains(@class,'help-block')]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ERROR_SPECIFIC_FORM_FIELD_REQUIRED</td>
 	<td>//div[contains(@data-fieldname,'${key_fieldName}')]/../../div[contains(@class,'has-error')]//div[contains(@class,'help-block')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>GENERIC</td>
+	<td>//div[contains(@class,'alert')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -171,6 +176,11 @@
 <tr>
 	<td>NO_ENTRIES</td>
 	<td>//div[contains(@id,'Empty') and contains(.,'No entries were found')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PORTAL_LOCALIZATION</td>
+	<td>//div[contains(@class,'portal-message') and contains(@class,'alert-info')]</td>
 	<td></td>
 </tr>
 <tr>

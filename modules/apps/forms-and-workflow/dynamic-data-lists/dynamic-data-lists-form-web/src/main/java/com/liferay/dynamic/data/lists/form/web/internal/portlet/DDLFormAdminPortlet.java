@@ -15,7 +15,8 @@
 package com.liferay.dynamic.data.lists.form.web.internal.portlet;
 
 import com.liferay.dynamic.data.lists.form.web.configuration.DDLFormWebConfigurationActivator;
-import com.liferay.dynamic.data.lists.form.web.internal.constants.DDLFormPortletKeys;
+import com.liferay.dynamic.data.lists.form.web.constants.DDLFormPortletKeys;
+import com.liferay.dynamic.data.lists.form.web.internal.converter.DDMFormRulesToDDLFormRulesConverter;
 import com.liferay.dynamic.data.lists.form.web.internal.display.context.DDLFormAdminDisplayContext;
 import com.liferay.dynamic.data.lists.model.DDLRecordSet;
 import com.liferay.dynamic.data.lists.model.DDLRecordSetSettings;
@@ -34,7 +35,6 @@ import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
 import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
-import com.liferay.dynamic.data.mapping.service.DDMDataProviderInstanceLocalService;
 import com.liferay.dynamic.data.mapping.service.DDMStructureLocalService;
 import com.liferay.dynamic.data.mapping.storage.DDMFormValues;
 import com.liferay.dynamic.data.mapping.storage.StorageAdapter;
@@ -305,21 +305,14 @@ public class DDLFormAdminPortlet extends MVCPortlet {
 		_ddlRecordSetService = ddlRecordSetService;
 	}
 
-	@Reference(unbind = "-")
-	protected void setDDMDataProviderInstanceLocalService(
-		DDMDataProviderInstanceLocalService
-			ddmDataProviderInstanceLocalService) {
-
-		_ddmDataProviderInstanceLocalService =
-			ddmDataProviderInstanceLocalService;
-	}
-
 	@Reference(
-		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.evaluator.internal.servlet.DDMFormEvaluatorServlet)",
+		target = "(osgi.http.whiteboard.servlet.name=com.liferay.dynamic.data.mapping.form.renderer.internal.servlet.DDMFormContextProviderServlet)",
 		unbind = "-"
 	)
-	protected void setDDMFormEvaluatorServlet(Servlet ddmFormEvaluatorServlet) {
-		_ddmFormEvaluatorServlet = ddmFormEvaluatorServlet;
+	protected void setDDMFormContextProviderServlet(
+		Servlet ddmFormContextProviderServlet) {
+
+		_ddmFormContextProviderServlet = ddmFormContextProviderServlet;
 	}
 
 	@Reference(unbind = "-")
@@ -370,6 +363,15 @@ public class DDLFormAdminPortlet extends MVCPortlet {
 		DDMFormValues ddmFormValues = recordSet.getSettingsDDMFormValues();
 
 		ddmFormRenderingContext.setDDMFormValues(ddmFormValues);
+	}
+
+	@Reference(unbind = "-")
+	protected void setDDMFormRulesToDDLFormRulesConverter(
+		DDMFormRulesToDDLFormRulesConverter
+			ddmFormRulesToDDLFormRulesConverter) {
+
+		_ddmFormRulesToDDLFormRulesConverter =
+			ddmFormRulesToDDLFormRulesConverter;
 	}
 
 	@Reference(unbind = "-")
@@ -431,13 +433,13 @@ public class DDLFormAdminPortlet extends MVCPortlet {
 				renderRequest, renderResponse,
 				_ddlFormWebConfigurationActivator.getDDLFormWebConfiguration(),
 				_ddlRecordLocalService, _ddlRecordSetService,
-				_ddmDataProviderInstanceLocalService, _ddmFormEvaluatorServlet,
+				_ddmFormContextProviderServlet,
 				_ddmFormFieldTypeServicesTracker,
 				_ddmFormFieldTypesJSONSerializer, _ddmFormJSONSerializer,
 				_ddmFormLayoutJSONSerializer, _ddmFormRenderer,
-				_ddmFormValuesFactory, _ddmFormValuesMerger,
-				_ddmStructureLocalService, _jsonFactory, _storageEngine,
-				_workflowEngineManager);
+				_ddmFormRulesToDDLFormRulesConverter, _ddmFormValuesFactory,
+				_ddmFormValuesMerger, _ddmStructureLocalService, _jsonFactory,
+				_storageEngine, _workflowEngineManager);
 
 		renderRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT, ddlFormAdminDisplayContext);
@@ -482,14 +484,14 @@ public class DDLFormAdminPortlet extends MVCPortlet {
 	private DDLRecordLocalService _ddlRecordLocalService;
 	private DDLRecordSetLocalService _ddlRecordSetLocalService;
 	private DDLRecordSetService _ddlRecordSetService;
-	private DDMDataProviderInstanceLocalService
-		_ddmDataProviderInstanceLocalService;
-	private Servlet _ddmFormEvaluatorServlet;
+	private Servlet _ddmFormContextProviderServlet;
 	private DDMFormFieldTypeServicesTracker _ddmFormFieldTypeServicesTracker;
 	private DDMFormFieldTypesJSONSerializer _ddmFormFieldTypesJSONSerializer;
 	private DDMFormJSONSerializer _ddmFormJSONSerializer;
 	private DDMFormLayoutJSONSerializer _ddmFormLayoutJSONSerializer;
 	private DDMFormRenderer _ddmFormRenderer;
+	private DDMFormRulesToDDLFormRulesConverter
+		_ddmFormRulesToDDLFormRulesConverter;
 	private DDMFormValuesFactory _ddmFormValuesFactory;
 	private DDMFormValuesMerger _ddmFormValuesMerger;
 	private DDMStructureLocalService _ddmStructureLocalService;

@@ -41,6 +41,8 @@ public class SyncAccount extends StateAwareModel {
 
 	public static final int UI_EVENT_SYNC_ACCOUNT_NOT_ACTIVE = 8;
 
+	public static final int UI_EVENT_SYNC_ACCOUNT_WIPED = 9;
+
 	public static final int UI_EVENT_SYNC_SERVICES_NOT_ACTIVE = 6;
 
 	public static final int UI_EVENT_SYNC_WEB_MISSING = 4;
@@ -81,6 +83,22 @@ public class SyncAccount extends StateAwareModel {
 
 	public String getFilePathName() {
 		return filePathName;
+	}
+
+	public String getLanCertificate() {
+		return lanCertificate;
+	}
+
+	public boolean getLanEnabled() {
+		return lanEnabled;
+	}
+
+	public String getLanKey() {
+		return lanKey;
+	}
+
+	public String getLanServerUuid() {
+		return lanServerUuid;
 	}
 
 	public String getLogin() {
@@ -139,6 +157,10 @@ public class SyncAccount extends StateAwareModel {
 		return syncAccountId;
 	}
 
+	public long getSyncContextModifiedTime() {
+		return syncContextModifiedTime;
+	}
+
 	public boolean getTrustSelfSigned() {
 		return trustSelfSigned;
 	}
@@ -158,6 +180,10 @@ public class SyncAccount extends StateAwareModel {
 
 	public boolean isActive() {
 		return getActive();
+	}
+
+	public boolean isLanEnabled() {
+		return getLanEnabled();
 	}
 
 	public boolean isOAuthEnabled() {
@@ -188,6 +214,22 @@ public class SyncAccount extends StateAwareModel {
 
 	public void setFilePathName(String filePathName) {
 		this.filePathName = filePathName;
+	}
+
+	public void setLanCertificate(String lanCertificate) {
+		this.lanCertificate = lanCertificate;
+	}
+
+	public void setLanEnabled(boolean lanEnabled) {
+		this.lanEnabled = lanEnabled;
+	}
+
+	public void setLanKey(String lanKey) {
+		this.lanKey = lanKey;
+	}
+
+	public void setLanServerUuid(String lanServerUuid) {
+		this.lanServerUuid = lanServerUuid;
 	}
 
 	public void setLogin(String login) {
@@ -246,6 +288,10 @@ public class SyncAccount extends StateAwareModel {
 		this.syncAccountId = syncAccountId;
 	}
 
+	public void setSyncContextModifiedTime(long syncContextModifiedTime) {
+		this.syncContextModifiedTime = syncContextModifiedTime;
+	}
+
 	public void setTrustSelfSigned(boolean trustSelfSigned) {
 		this.trustSelfSigned = trustSelfSigned;
 	}
@@ -269,6 +315,18 @@ public class SyncAccount extends StateAwareModel {
 
 	@DatabaseField(useGetSet = true, width = 16777216)
 	protected String filePathName;
+
+	@DatabaseField(useGetSet = true, width = 16777216)
+	protected String lanCertificate;
+
+	@DatabaseField(useGetSet = true)
+	protected boolean lanEnabled;
+
+	@DatabaseField(useGetSet = true, width = 16777216)
+	protected String lanKey;
+
+	@DatabaseField(index = true, useGetSet = true)
+	protected String lanServerUuid;
 
 	@DatabaseField(useGetSet = true, width = 16777216)
 	protected String login;
@@ -311,6 +369,9 @@ public class SyncAccount extends StateAwareModel {
 
 	@DatabaseField(generatedId = true, useGetSet = true)
 	protected long syncAccountId;
+
+	@DatabaseField(useGetSet = true)
+	protected long syncContextModifiedTime;
 
 	@DatabaseField(useGetSet = true)
 	protected boolean trustSelfSigned;
